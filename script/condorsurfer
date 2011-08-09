@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+# This script launches new runs of the application in a segment you specify.
+# You can also decide what to do when dataset you submit collide with existing
+# datasets in the segment.
+require 'config/boot'
+require 'optparse'
+
+
+
+def main
+  options = parse_args
+  display_args(options) if options[:verb]
+  
+  segment = options[:segment]
+  rundir = SEGMENTS_DIR + '/' + segment
+  collision = options[:collision]
+  verb = options[:verb]
+  
+  whitelist = options[:only]
+  blacklist = options[:except]
+  whitelist = nil if options[:all]
+
+  submission = build_provisions rundir, options[:datadir], whitelist, blacklist
+  
+  submission.datasets.each do |d|
+    dag = build_dag d
+    dag.save!("tmp/#{d.uniq}.dag")
+    submission.provides :from => 'tmp', :to => d.sink do
+      file "#{d.uniq}.dag"
+    end
+  end
+
+  submission.fulfill
+  
+  if options[:submit]
+    submission.datasets.each do |d|
+      Dir.chdir(d.sink) do |dir|
+        `condor_submit_dag #{d.uniq}.dag`
+      end
+    end
+  end
+
+end
+
+
+
+
+def parse_args
+	# default options
+	options = {
+	  :segment         => nil,
+	  :all             => false,
+	  :only            => nil,
+	  :except          => nil,
+	  :collision       => 'skip',
+	  :verb            => false,
+	  :submit          => false,
+		:datadir => DATA_SOURCES_DIR
+	}
+	
+  ARGV.options do |o|
+    script_name = File.basename($0)
+
+    o.set_summary_indent('    ')
+    o.banner =    "Usage: #{script_name} [options]"
+    o.define_head "Submits jobs to a segment for Condor processing"
+    o.separator   ""
+
+    o.on("-s","--segment=SEGMENT","Specify segment in which to run this data") { |options[:segment]| }
+    o.on('-a','--all','Include all datasets available') { |options[:all]| }
+    o.on('-o','--only=WHITELIST', Array, 'Include only the specified datasets') do |whitelist|
+      options[:only] = whitelist.map { |dataset| dataset.strip }
+    end
+    o.on('-b','--except=BLACKLIST', Array, 'Reject these datasets') do |blacklist|
+      options[:except] = blacklist.map { |dataset| dataset.strip }
+    end
+    o.on("-c", "--collision=[RESPONSE]", [:skip, :replace],
+         "On dataset collision: skip, replace") { |options[:collision]| }
+    o.on('--submit','Submit the datasets to condor') { |options[:submit]| }
+    o.on('-v','--verbose','Be wordy') { |options[:verb]| }
+		o.on('-d','--datadir=DATA_SOURCES_DIRECTORY','Specify an alternate data source directory') { |options[:datadir]| }
+
+    o.separator ""
+    o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
+    o.parse!
+    
+    if options[:segment].nil?
+      puts "Missing argument: --segment=SEGMENT is required"
+      puts o; exit
+    end
+  end
+	
+	return options
+end
+  
+def display_args(options)
+  options.each_pair do |k,v|
+    puts "%15s:  %s" % [k,v.to_s]
+  end
+  puts "%15s:  %s" % ['arguments', ARGV]
+end
+
+if __FILE__ == $0
+  main
+end

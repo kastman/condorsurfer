@@ -1,0 +1,32 @@
+
+<h2>Processing Segments</h2>
+<ul>
+  <% @segments.each do |segment| %>
+    <li><a href="segments/<%= segment %>"><%= segment %></a></li>
+  <% end %>
+</ul>
+
+
+<h2>Configurations</h2>
+<table border="0" class="kv">
+  <tr>
+    <th>Application name</th>
+    <td><%= @app_name %></td>
+  </tr>
+  <tr>
+    <th>Data source directory</th>
+    <td><%= @data_sources_dir %></td>
+  </tr>
+  <tr>
+    <th>Processing segments directory</th>
+    <td><%= @segments_dir %></td>
+  </tr>
+</table>
+
+<h2>Available Datasets</h2>
+<ul class="datalist">
+  <% @data_ids.each do |d| %>
+    <li><%= d %></li>
+  <% end %>
+</ul>
+
