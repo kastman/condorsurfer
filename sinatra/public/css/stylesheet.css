@@ -20,3 +20,7 @@ table.kv th.header { text-align:left; padding:0 2em; }
 ul.datalist { margin:1em; padding:0; overflow:hidden; }
 ul.datalist li { margin:0; padding:0.2em 1em 0.2em 0; font-family:courier; font-size:8pt;
   float:left; color:#666;}
+
+.kv_key {width: 120px; display: block; float: left; font-weight: bold; text-align: right; padding: 0 6px}
+
+pre.rawlog { font-size: 8pt; color: #888; border: thin #333 solid; padding: 20px; background: #444; overflow-x: auto; width: 660px;}

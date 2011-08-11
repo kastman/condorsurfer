@@ -1,0 +1,79 @@
+<h2>Summary for <span style="color:red;"><%= @dataset.data_id %></span> dataset in <a href="<%= "/segments/#{@segment.name}" %>"><%= @segment.name %></a> segment</h2>
+
+<h3>Status:</h3>
+<% executible_log = Scarcity::DagLog.new(@dataset.directory + '/executibles.log') %>
+<p>
+	<span class="kv_key">Current Status:</span><%= @dataset.status %><br/>
+	<span class="kv_key">Outcome:</span><%= outcome = RETURN_CODES.message(@dataset.return_value) %><br/>
+	<span class="kv_key">Duration:</span><%= executible_log.duration %>
+</p>
+
+<h3>Event Log for <%= @dataset.logfile %></h3>
+<table border="0" class="kv">
+  <tr><th class='header'>Time</th><th class='header'>Description</th></tr>
+  <% @dataset.daglog.events.each do |event| %>
+    <tr>
+      <th><%= event.at.strftime("%D %r") %></th>
+      <td><%= event.action %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h3>Event Log for <%= executible_log.filename %></h3>
+<div id="container" style="width: 700px; height: 400px;"></div>
+<!-- <table border="0" class="kv">
+  <tr><th class='header'>Time</th><th class='header'>Description</th></tr>
+  <%# executible_log.events.each do |event| %>
+    <tr>
+      <th><%#= event.at.strftime("%D %r") %></th>
+      <td><%#= Rack::Utils.escape_html event.action %></td>
+    </tr>
+  <%# end %>
+</table> -->
+
+<% content_for :head do %>
+	<script type="text/javascript"> 
+	var chart1; // globally available
+	$(document).ready(function() {
+		chart1 = new Highcharts.Chart({
+			 chart: {
+					renderTo: 'container',
+					defaultSeriesType: 'line'
+			 },
+			 title: {
+					text: 'Condor Image Size'
+			 },
+			 xAxis: {
+					type: 'datetime',
+					labels: {
+						text: 'Time',
+						align: 'left'
+					}
+			 },
+			 yAxis: {
+					title: {
+						 text: ''
+					},
+					min: 0
+					
+			 },
+			
+		});
+	
+		chart1.addSeries({
+			name: 'executibles.log',
+			data: [
+				<%= executible_log.events.select{|e| e.action =~ /size/}.collect{|e| "[#{e.to_array}]" }.join(", ") %>
+			]
+		})
+	
+	});
+
+
+	</script>
+<% end %>
+<pre class="rawlog">
+	<%= Rack::Utils.escape_html(executible_log.raw_text) %>
+</pre>
+
+<p><a href='/segments'>back to segments</a></p>

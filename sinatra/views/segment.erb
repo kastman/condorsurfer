@@ -2,11 +2,14 @@
 
 <h3>Datasets Submitted</h3>
 <table border="0" class="kv">
-  <tr><th></th><th class='header'>Status</th><th class='header'>Outcome</th></tr>
+  <tr><th></th><th class='header'>DAG Status</th><th class="header">Duration</th><th class="header">Current Job Status</th><th class='header'>Outcome</th></tr>
   <% @segment.datasets.each do |dataset| %>
     <tr>
-      <th><%= dataset.data_id %></th>
+			<% executible_log = Scarcity::DagLog.new(File.join(dataset.directory, 'executibles.log')) %>
+      <th><a href="<%= "/segments/#{@segment.name}/#{dataset.data_id}" %>"><%= dataset.data_id %></a></th>
       <td class="<%= dataset.status %>"><%= dataset.status %></td>
+			<td class="<%= dataset.status %>"><%= executible_log.duration %></td>
+			<td class="<%= dataset.status %>"><%= "#{executible_log.events.last.at.strftime("%D %r")} - #{executible_log.events.last.action}" %></td>
       <td><%= RETURN_CODES.message(dataset.return_value) %></td>
     </tr>
   <% end %>

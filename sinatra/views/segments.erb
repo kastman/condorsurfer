@@ -1,6 +1,14 @@
 <h2>Current Data Processing Segments</h2>
-<ul>
-  <% @segments.each do |segment| %>
-    <li><a href="segments/<%= segment %>"><%= segment %></a></li>
-  <% end %>
-</ul>
+<table class="kv">
+	<thead><tr><th>Name</th><th>Running</th><th>Successful</th></tr></thead>
+	<tbody>
+	  <% @segments.each do |segment| %>
+	    <tr>
+	    	<td><a href="segments/<%= segment.name %>"><%= segment.name %></a></td>
+				<td><%= running 		= segment.datasets.select{|d| d.status =~ /executing/}.count %></td>
+				<td><%= successful 	= segment.datasets.select{|d| RETURN_CODES.message(d.return_value) == "Completed successfully" }.count %></td>
+	    </tr>
+	  <% end %>
+		
+	</tbody>
+</table>
