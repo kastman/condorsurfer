@@ -3,6 +3,9 @@ require 'rubygems'
 require 'ftools'
 require 'fileutils'
 require 'yaml'
+require 'bundler/setup'
+
+Bundler.require(:default)
 
 # vendor gems
 # require 'sinatra'
