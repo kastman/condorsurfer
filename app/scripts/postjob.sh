@@ -4,3 +4,7 @@
 # the particular dataset.
 
 # tar -czf freesurfer_result.tar.gz $1
+
+if [ -f freesurfer_results.tar.gz ]; then
+	tar -xzvf freesurfer_results.tar.gz
+fi

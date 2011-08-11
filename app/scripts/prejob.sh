@@ -5,3 +5,5 @@
 
 # source /data2/grecc/freesurfer/SetUpFreeSurfer.sh
 # export SUBJECTS_DIR='.'
+# archive_file="freesurfer_results.tar.gz"
+# if [ ! -f $archive_file ]; then touch $archive_file; fi

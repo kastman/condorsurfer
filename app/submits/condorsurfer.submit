@@ -30,7 +30,7 @@ arguments = "$(args)"
 
 error = $(exec).err
 output = $(exec).out
-log = executables.log
+log = executibles.log
 
 
 ##############################################################################
@@ -71,10 +71,11 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 ##############################################################################
 
 match_list_length = 5
-requirements = (Arch == "X86_64") && (TARGET.Name =!= LastMatchName1) && (OpSys == "LINUX") && (Disk > 500000) && (MAX_PREEMPT > 30*3600)
+requirements = (TARGET.Name =!= LastMatchName1) && (HasFreesurfer510 == true)
 # requirements = (Arch == "X86_64") && \
-#               (TARGET.Name =!= LastMatchName1) && \
-#               (OpSys == "LINUX")
+#                (TARGET.Name =!= LastMatchName1) && \
+#                (OpSys == "LINUX") && \
+#                (HasFreesurfer510 == true)
 +AccountingGroup = "GRECC"
 Notification = never
 

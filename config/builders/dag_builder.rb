@@ -17,16 +17,39 @@ def build_dag(dataset)
     # job :head, 'null.submit'
     
     # jobs can take a block to specify dag configurations relevant to the node
-    job :main, "condorsurfer.submit" do
+    job :autorecon1, "condorsurfer.submit" do
       pre 'prejob.sh'
       post 'postjob.sh'
-      vars :args => dataset.uniq,
+      vars :args => [dataset.uniq, "1 -nuintensitycor-3T"].join(" "),
            :exec => "condorsurfer.sh",
-           :inputfiles => dataset.uniq + ".nii"
+           :inputfiles => "#{dataset.uniq}.nii"
       priority 5
       retries 3
     end
 
+    job :autorecon2, "condorsurfer.submit" do
+      pre 'prejob.sh'
+      post 'postjob.sh'
+      vars :args => [dataset.uniq, 2].join(" "),
+           :exec => "condorsurfer.sh",
+           :inputfiles => "freesurfer_results.tar.gz"
+      priority 5
+      retries 3
+    end
+    
+    job :autorecon3, "condorsurfer.submit" do
+      pre 'prejob.sh'
+      post 'postjob.sh'
+      vars :args => [dataset.uniq, 3].join(" "),
+           :exec => "condorsurfer.sh",
+           :inputfiles => "freesurfer_results.tar.gz"
+      priority 5
+      retries 3
+    end
+    
+    breed :autorecon1, :children => :autorecon2
+    breed :autorecon2, :children => :autorecon3
+    
     # job :tail, 'null.submit'
     
     # breed parent nodes to define child nodes
