@@ -6,7 +6,9 @@ APP_NAME = "condorsurfer"
 # when data is submitted all the relavant input files and scripts etc will
 # provisioned into each dataset's directory
 # i.e. RUNS_DIR/<segment>/<dataset>
-SEGMENTS_DIR = '/Data/vtrak1/analyses/freesurfer/scarcity_proc/segments'
+# SEGMENTS_DIR = '/Data/vtrak1/analyses/freesurfer/scarcity_proc/segments'
+SEGMENTS_DIR = '/Data/condorsurfer'
+# Note: SEGMENTS_DIR is a condor run dir, which CANNOT be on NFS. Lousy condor.
 
 # The place from which the input data for this application will be drawn.
 # Nothing is ever changed in here, data is always copied out to the run time
