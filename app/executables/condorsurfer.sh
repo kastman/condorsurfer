@@ -30,13 +30,12 @@ export NO_FSFAST=1
 # source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # Input Arguments
-uniq=$1
-recon_all_phase=$2
-extra_arg=$3
+uniq=$1; shift
+recon_all_phase=$1; shift
+freesurfer_args="$*"
 
 archive_file=freesurfer_results.tar.gz
 if [ -f $archive_file ]; then tar -xzvf ${archive_file}; fi
-# mkdir subjects
 
 echo "FREESURFER_HOME"
 echo $FREESURFER_HOME
@@ -47,32 +46,13 @@ echo $FUNCTIONALS_DIR
 echo "SUBJECTS_DIR"
 echo $SUBJECTS_DIR
 
-# echo "This is what's here"
-# ls
-
-echo "This is what's in SUBJECTS_DIR $SUBJECTS_DIR"
-ls $SUBJECTS_DIR
-
-# importfile=""
-# if (-f I0001.dcm); then
-# 	importfile="I0001.dcm"
-# elif (ls *.0001 &> /dev/null); then
-# 	importfile=$(ls *.0001)
-# elif (ls *.nii); then
-# 	importfile=$(ls *.nii)
-# fi
-# 
-# echo "Import file:" ${importfile}
-# 
-# recon-all -i ${importfile} -subjid ${uniq}
+# Do initial recon if this is phase 1
 if [ ${recon_all_phase} -eq 1 ]; then
 	recon-all -i ${uniq}.nii -subjid ${uniq}
 fi
 
-recon-all -autorecon${recon_all_phase} $extra_arg -subjid ${uniq} > out.${recon_all_phase}
+# Run Autorecon for current phase and capture phase's output.
+recon-all -autorecon${recon_all_phase} $freesurfer_args -subjid ${uniq} > phase${recon_all_phase}.out
 
-# pushd $SUBJECTS_DIR
 if [ -f $archive_file ]; then rm $archive_file; fi
 tar -czvf $archive_file ${uniq}
-# popd
-# mv $SUBJECTS_DIR/freesurfer_results.tar.gz .

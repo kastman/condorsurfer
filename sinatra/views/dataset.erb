@@ -19,6 +19,18 @@
   <% end %>
 </table>
 
+<a href="#" onclick="this.innerHTML =  this.innerHTML == 'Show Daglog' ? 'Hide Daglog' : 'Show Daglog'; $('#dag_daglog_raw_text').slideToggle(); return false;">Show Daglog</a> |
+<a href="#" onclick="this.innerHTML =  this.innerHTML == 'Show Outlog' ? 'Hide Outlog' : 'Show Outlog'; $('#dag_outlog_raw_text').slideToggle(); return false;">Show Outlog</a> 
+
+
+<pre class="rawlog" id="dag_daglog_raw_text" style="display: none;">
+	<%= Rack::Utils.escape_html(@dataset.daglog.raw_text) %>
+</pre>
+
+<pre class="rawlog" id="dag_outlog_raw_text" style="display: none;">
+	<%= Rack::Utils.escape_html(@dataset.dag_outlog.raw_text) %>
+</pre>
+
 <h3>Event Log for <%= executible_log.filename %></h3>
 <div id="container" style="width: 700px; height: 400px;"></div>
 <!-- <table border="0" class="kv">

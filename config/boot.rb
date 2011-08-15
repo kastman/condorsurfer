@@ -7,12 +7,6 @@ require 'bundler/setup'
 
 Bundler.require(:default)
 
-# vendor gems
-# require 'sinatra'
-
-# local gems
-require 'scarcity'
-
 # application configs
 require 'config/environment.rb'
 require 'config/builders/dag_builder.rb'

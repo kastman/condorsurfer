@@ -9,7 +9,7 @@
       <th><a href="<%= "/segments/#{@segment.name}/#{dataset.data_id}" %>"><%= dataset.data_id %></a></th>
       <td class="<%= dataset.status %>"><%= dataset.status %></td>
 			<td class="<%= dataset.status %>"><%= executible_log.duration %></td>
-			<td class="<%= dataset.status %>"><%= "#{executible_log.events.last.at.strftime("%D %r")} - #{executible_log.events.last.action}" %></td>
+			<td class="<%= dataset.status %>"><%= "#{executible_log.events.last.at.strftime("%D %r")} - #{executible_log.events.last.action}" unless executible_log.events.empty? %></td>
       <td><%= RETURN_CODES.message(dataset.return_value) %></td>
     </tr>
   <% end %>
