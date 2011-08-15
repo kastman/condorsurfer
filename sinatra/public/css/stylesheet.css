@@ -13,9 +13,10 @@ a:hover { text-decoration:underline; }
 
 .detail { font-size:small; color:#666; }
 
-table.kv th { text-align:right; font-weight:normal; font-size:8pt; }
-table.kv td { text-align:left; font-style:italic; color:#666; padding:0 2em; font-size:8pt; }
-table.kv th.header { text-align:left; padding:0 2em; }
+table.kv { color:#666; font-size:8pt; }
+table.kv th { text-align:right; font-weight:normal;  }
+table.kv td { text-align:left; font-style:italic; padding:0 2em; }
+table.kv tr.header th { text-align:left; padding:0 2em; }
 
 ul.datalist { margin:1em; padding:0; overflow:hidden; }
 ul.datalist li { margin:0; padding:0.2em 1em 0.2em 0; font-family:courier; font-size:8pt;
@@ -24,3 +25,4 @@ ul.datalist li { margin:0; padding:0.2em 1em 0.2em 0; font-family:courier; font-
 .kv_key {width: 120px; display: block; float: left; font-weight: bold; text-align: right; padding: 0 6px}
 
 pre.rawlog { font-size: 8pt; color: #888; border: thin #333 solid; padding: 20px; background: #444; overflow-x: auto; width: 660px;}
+td.running_true {color: #208D4E;}
