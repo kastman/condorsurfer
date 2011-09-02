@@ -7,4 +7,6 @@ This project handles DAG creation, submission and web interface for submitting
 using the [Scarcity](https://github.com/kastman/scarcity) ruby/sinatra 
 framework.
 
-It's primarily in use at the [WADRC Imaging Group](http://brainmap.wisc.edu).
+![WADRC Logo](http://brainmap.wisc.edu/images/wadrc_logo.png)
+
+[WADRC Imaging Group](http://brainmap.wisc.edu)
