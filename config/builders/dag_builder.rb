@@ -20,9 +20,10 @@ def build_dag(dataset)
     job :autorecon1, "condorsurfer.submit" do
       pre 'prejob.sh'
       post 'postjob.sh'
-      vars :args => [dataset.uniq, "1 -nuintensitycor-3T"].join(" "),
+      vars :args => "#{dataset.uniq} 1 -nuintensitycor-3T",
+      # vars :args => "#{dataset.uniq} 1",
            :exec => "condorsurfer.sh",
-           :inputfiles => "#{dataset.uniq}.nii"
+           :inputfiles => "#{dataset.uniq}.tar.gz"
       priority 5
       retries 3
     end
@@ -30,7 +31,7 @@ def build_dag(dataset)
     job :autorecon2, "condorsurfer.submit" do
       pre 'prejob.sh'
       post 'postjob.sh'
-      vars :args => [dataset.uniq, 2].join(" "),
+      vars :args => "#{dataset.uniq} 2",
            :exec => "condorsurfer.sh",
            :inputfiles => "freesurfer_results.tar.gz"
       priority 5
@@ -40,7 +41,7 @@ def build_dag(dataset)
     job :autorecon3, "condorsurfer.submit" do
       pre 'prejob.sh'
       post 'postjob.sh'
-      vars :args => [dataset.uniq, 3].join(" "),
+      vars :args => "#{dataset.uniq} 3",
            :exec => "condorsurfer.sh",
            :inputfiles => "freesurfer_results.tar.gz"
       priority 5

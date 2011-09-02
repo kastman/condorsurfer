@@ -11,7 +11,7 @@ def build_provisions(run_directory, data_directory, whitelist, blacklist)
     # This will not need to change in almost all cases.
     runs_in         run_directory
     pulls_from      data_directory, :only => whitelist, :except => blacklist
-    gathers_provisions # :zip_data => true
+    gathers_provisions :zip_data => true
   
     # Declare other goods that will be provided to each dataset at run time.
     provides :from => 'app/executables', :to => :each_dataset do
