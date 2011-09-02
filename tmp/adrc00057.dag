@@ -1,6 +1,0 @@
-JOB main condorsurfer.submit
-SCRIPT PRE main prejob.sh
-SCRIPT POST main postjob.sh
-VARS main inputfiles="adrc00057.nii" args="adrc00057" exec="condorsurfer.sh"
-PRIORITY main 5
-RETRY main 3

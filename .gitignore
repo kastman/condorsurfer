@@ -1,2 +1,4 @@
 ._*
 tmp/*
+nohup.out
+Gemfile.lock
